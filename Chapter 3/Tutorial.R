@@ -135,5 +135,47 @@ pointsTable <- data.frame(teams, won, lost, points)
 pointsTable
 #To Get the number of wins for MI we do
 pointsTable$won[pointsTable$teams == 'MI']
-
+#cars is a dataset present which captures the stopping speed and the
+#distance it takes to bring the car to a halt
+#cars. Clearly the distance has a direct relation to the speed and we can 
+#fit a linear model for this which enables us to predict the distance
+#given a speed. We define it as distance = a*speed + c. To find the value 
+#of a and c from the dataset we use the built in lm function. The above
+#relation is specified as distance ~ speed and this estimation needs a 
+#sample dataset
+cars.lm <- lm(formula=dist~speed, data=cars)
+cars.lm
+#Summary and more details of this lm fumction can be found out as
+summary(cars.lm)
+#We will see the meaning of thie output and how to use it for estimation
+#later: TODO
+#install the nutshell package by uncommenting the below
+#install.packages('nutshell')
+#We will now plot the cars data with the speed on x axis and the stopping
+#distance on y axis. The cars data contains 50 data elements. The data 
+#is already loaded in the base package.
+#The type is of a data frame. The below command should confirm
+class(cars)
+#dim can be used to find the dimension of the data frame. It gives us the
+#num of rows X num of cols
+#The names of the columns in the data frame can be seen as below
+names(cars)
+#Let is finally plot the data
+#The first parameter is for the data, xlab and ylab for X Axis Lable and
+#y Axis Lable respectively Additionally we can restrict the value of the
+#x axis values using xlim parameter the value is a vector giving the min 
+#and max value. In this case it is optional as we want to show the whole 
+#range
+plot(cars, xlab="Speed", ylab="Stopping Distance(ft)", xlim=c(0, 25))
+#We can get a summary of the data in a data frame as below
+summary(cars)
+#Dot plots are more pretty and present in lattice library
+#Load the lattics library as below
+library(lattice)
+#We now use dotplot to plot the same data we plotted using plot
+#execute the below
+dotplot(dist ~ speed, data=cars)
+#Notice that unlike the plot function, the y axis doesnt show the actual 
+#value but the order of value
+#TODO: See how to plot the actual value on Y axis and not the order
 
