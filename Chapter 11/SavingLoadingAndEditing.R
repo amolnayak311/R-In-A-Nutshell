@@ -85,6 +85,50 @@ write.table(
 #file is overwritten and not appended. The value row.names and col.names
 #is TRUE which puts the row number as String in the output and the header
 #in the exported file.
+#Now we will see how to connect to Database and work on the data from the
+#database. We will use the DBI Approach to connect to the Database
+#As odbc approach didnt work.
+#First, install the RSQLite package, uncomment for first time only
+#install.packages('RSQLite')
+#Then load the package as below
+library(RSQLite)
+#Get the SQLite Driver as below
+drv <- dbDriver('SQLite')
+#Now we use this driver to connect to the bb.db database. The location of
+#the file on the filesystem can be retrieved as below
+fileLocation <- system.file('extdata', 'bb.db', package='nutshell.bbdb')
+fileLocation
+# We use this fileName and the driver to connect to this sqlite db
+connection <- dbConnect(drv, fileLocation)
+#If all goes well, we now have the connection to this database.
+#Let us see if we can find the list of all tables in the database
+dbListTables(connection)
+#So now we see 27 different table in the database.
+#Now let us see the columns of the Allstar table
+dbListFields(connection, "Allstar")
+#Note that the columns are called fields. So its dbListFields and not 
+#dbListColumns. The two parameters are the connection object created
+#earlier and the name of the table.
+#similarly, let us see what fields(columns) we have in table Teams
+dbListFields(connection, "Teams")
+#Let us get the total wins and loses for year 2008 
+#and league American League. The sql query for this would be 
+#select teamID, name, W, L from Teams where yearID = '2008' and lgID = 'AL'
+query <- "select teamID, name, W, L from Teams where yearID = 2008 and lgID = 'AL'"
+query
+#Let us now execute this query
+wlrecords.2008 <- dbGetQuery(connection, query)
+wlrecords.2008
+typeof(wlrecords.2008)
+#As we see above, we get the data for the teams. The dimension of the above
+#list is 14 X 4. Which is confirmed by the below call of dim.
+dim(wlrecords.2008)
+# We have successfully queried the table to get the data from it. 
+#Now let is execute something more complex.
+
+
+
+
 
 
 
